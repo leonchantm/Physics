@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S.4 Physics Summer MC 挑戰塔</title>
+<style>
+:root{--bg:#0f172a;--panel:#111827;--panel2:#1f2937;--accent:#38bdf8;--ok:#22c55e;--bad:#ef4444;--text:#e5e7eb;--muted:#94a3b8;}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,"Microsoft JhengHei","PingFang TC",sans-serif;background:linear-gradient(135deg,#020617,#0f172a 40%,#111827);color:var(--text);}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.card{background:rgba(17,24,39,.92);backdrop-filter:blur(6px);border:1px solid #334155;border-radius:18px;box-shadow:0 20px 40px rgba(0,0,0,.25)}
+.hidden{display:none}
+h1,h2,h3,p{margin:0}
+.topbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.badge{padding:10px 14px;border-radius:999px;background:#0b1220;border:1px solid #334155;font-size:14px}
+.hero{padding:28px}
+.hero h1{font-size:34px;margin-bottom:10px}
+.hero p{color:var(--muted);line-height:1.6}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:18px}
+.rule{padding:14px;border-radius:14px;background:#0b1220;border:1px solid #334155}
+button{cursor:pointer;border:none;border-radius:14px;padding:14px 18px;font-size:16px;font-weight:700}
+.primary{background:linear-gradient(90deg,#0ea5e9,#22c55e);color:#03111f}
+.secondary{background:#1e293b;color:#e2e8f0;border:1px solid #475569}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.game{padding:18px}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:12px;margin-bottom:14px}
+.stat{padding:12px;background:#0b1220;border:1px solid #334155;border-radius:14px}
+.stat .label{font-size:12px;color:var(--muted);margin-bottom:6px}
+.stat .value{font-size:24px;font-weight:800}
+.progress-wrap{margin:10px 0 16px}
+.progress{height:14px;background:#0b1220;border-radius:999px;border:1px solid #334155;overflow:hidden}
+.progress > div{height:100%;background:linear-gradient(90deg,#38bdf8,#22c55e);width:0%;transition:width .35s}
+.question-box{padding:18px}
+.question-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.topic{font-size:14px;color:#7dd3fc}
+.timer{font-size:26px;font-weight:900}
+.timer.warn{color:#fbbf24}.timer.danger{color:#f87171}
+.image-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.image-grid img{width:100%;height:auto;border-radius:14px;background:white;border:1px solid #475569}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:12px;margin-top:18px}
+.answer-btn{padding:18px;font-size:24px;background:#111827;color:white;border:1px solid #475569}
+.answer-btn:hover{transform:translateY(-1px);background:#1f2937}
+.feedback{margin-top:14px;padding:14px;border-radius:14px;font-weight:700}
+.feedback.ok{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4)}
+.feedback.bad{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4)}
+.center{text-align:center}
+.small{font-size:14px;color:var(--muted)}
+.footer-actions{display:flex;justify-content:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+.level-banner{padding:14px 16px;margin-bottom:12px;background:linear-gradient(90deg,rgba(56,189,248,.18),rgba(34,197,94,.18));border:1px solid #334155;border-radius:14px}
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.78);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}
+.modal.hidden{display:none !important}
+.modal .panel{max-width:720px;width:100%;padding:28px}
+ul{padding-left:18px}
+@media(max-width:780px){.stats{grid-template-columns:repeat(2,minmax(120px,1fr))}.answers{grid-template-columns:1fr 1fr}.hero h1{font-size:28px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="startScreen" class="card hero">
+    <div class="topbar">
+      <div class="badge">🎮 97 題 Physics MC 挑戰塔</div>
+      <div class="badge">免安裝：直接開啟 HTML 即玩</div>
+    </div>
+    <h1>S.4 Physics Summer MC 破關升級遊戲</h1>
+    <p>全部題目均直接使用原始截圖，不做 OCR。已按文件答案建立 97 題題庫，並保留共用情境圖／題目圖的對應。答錯、超時或中斷連勝都會打斷升級連勝，需要重新累積該層連勝數。</p>
+    <div class="rules">
+      <div class="rule"><strong>第 1 層</strong><br>連續答對 3 題<br><span class="small">每題 1 分 30 秒</span></div>
+      <div class="rule"><strong>第 2 層</strong><br>連續答對 5 題<br><span class="small">每題 1 分 30 秒</span></div>
+      <div class="rule"><strong>第 3 層</strong><br>連續答對 8 題<br><span class="small">每題 1 分 30 秒</span></div>
+      <div class="rule"><strong>第 4 層</strong><br>連續答對 10 題<br><span class="small">每題 1 分鐘</span></div>
+      <div class="rule"><strong>第 5 層</strong><br>連續答對 12 題爆機<br><span class="small">每題 45 秒</span></div>
+    </div>
+    <div class="actions">
+      <button class="primary" onclick="startGame()">開始挑戰</button>
+      <button class="secondary" onclick="showHelp()">玩法說明</button>
+    </div>
+  </div>
+
+  <div id="gameScreen" class="card game hidden">
+    <div class="level-banner" id="levelBanner"></div>
+    <div class="stats">
+      <div class="stat"><div class="label">目前層數</div><div class="value" id="levelValue">1</div></div>
+      <div class="stat"><div class="label">本層連勝</div><div class="value" id="streakValue">0</div></div>
+      <div class="stat"><div class="label">本層目標</div><div class="value" id="goalValue">3</div></div>
+      <div class="stat"><div class="label">已答題數</div><div class="value" id="answeredValue">0</div></div>
+      <div class="stat"><div class="label">答對總數</div><div class="value" id="correctValue">0</div></div>
+      <div class="stat"><div class="label">題庫剩餘</div><div class="value" id="remainingValue">97</div></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="small" id="progressText">距離升級還差 3 題</div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+    <div class="question-box">
+      <div class="question-title">
+        <div>
+          <div class="topic" id="topicText"></div>
+          <h2 id="questionTitle">題目</h2>
+        </div>
+        <div class="timer" id="timerText">01:30</div>
+      </div>
+      <div class="image-grid" id="imageGrid"></div>
+      <div class="answers">
+        <button class="answer-btn" onclick="submitAnswer('A')">A</button>
+        <button class="answer-btn" onclick="submitAnswer('B')">B</button>
+        <button class="answer-btn" onclick="submitAnswer('C')">C</button>
+        <button class="answer-btn" onclick="submitAnswer('D')">D</button>
+      </div>
+      <div id="feedback" class="feedback hidden"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="card panel center">
+    <h2 id="modalTitle">結果</h2>
+    <p id="modalText" style="margin-top:12px; line-height:1.7"></p>
+    <div class="footer-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script>
+const LEVELS = [
+  {level:1, goal:3, time:90},
+  {level:2, goal:5, time:90},
+  {level:3, goal:8, time:90},
+  {level:4, goal:10, time:60},
+  {level:5, goal:12, time:45}
+];
+
+let pool=[], usedIds=new Set(), currentQuestion=null, currentLevel=0, streak=0, totalCorrect=0, totalAnswered=0;
+let timer=null, timeLeft=0, accepting=false;
+
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+function fmtTime(sec){ const m=String(Math.floor(sec/60)).padStart(2,'0'); const s=String(sec%60).padStart(2,'0'); return `${m}:${s}`; }
+function currentCfg(){ return LEVELS[currentLevel]; }
+
+function startGame(){
+  pool = shuffle([...QUESTIONS]);
+  usedIds = new Set();
+  currentLevel = 0; streak = 0; totalCorrect = 0; totalAnswered = 0;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('gameScreen').classList.remove('hidden');
+  closeModal();
+  nextQuestion();
+}
+function showHelp(){
+  openModal('玩法說明', `
+    <ul style="text-align:left;line-height:1.8">
+      <li>每題只需按 A / B / C / D 作答。</li>
+      <li>每層都要達到指定連勝才會升級；答錯或超時會把<strong>該層連勝</strong>歸零。</li>
+      <li>第 1–3 層每題限時 90 秒；第 4 層 60 秒；第 5 層 45 秒。</li>
+      <li>97 題會隨機抽出，不會重覆，直到題庫用完。</li>
+      <li>有些題目會同時顯示 2–3 張圖，代表共用情境圖／題目圖，請一併參考。</li>
+    </ul>`, [{label:'知道了', cls:'primary', action:'closeModal()'}]);
+}
+function updateStats(){
+  const cfg=currentCfg();
+  document.getElementById('levelValue').textContent = cfg.level;
+  document.getElementById('streakValue').textContent = streak;
+  document.getElementById('goalValue').textContent = cfg.goal;
+  document.getElementById('answeredValue').textContent = totalAnswered;
+  document.getElementById('correctValue').textContent = totalCorrect;
+  document.getElementById('remainingValue').textContent = QUESTIONS.length - usedIds.size;
+  document.getElementById('progressText').textContent = streak>=cfg.goal ? '已達標，準備升級！' : `距離升級還差 ${cfg.goal-streak} 題`;
+  document.getElementById('progressBar').style.width = Math.min(100, streak/cfg.goal*100) + '%';
+  document.getElementById('levelBanner').innerHTML = `第 <strong>${cfg.level}</strong> 層：連續答對 <strong>${cfg.goal}</strong> 題即可${cfg.level===5?'爆機':'升級'}　｜　限時：<strong>${fmtTime(cfg.time)}</strong>`;
+}
+function pickQuestion(){
+  if(usedIds.size >= QUESTIONS.length) return null;
+  let q;
+  do { q = pool[Math.floor(Math.random()*pool.length)]; } while(usedIds.has(q.id));
+  usedIds.add(q.id);
+  return q;
+}
+function nextQuestion(){
+  const cfg=currentCfg();
+  updateStats();
+  const q=pickQuestion();
+  if(!q){ endGame(false, '題庫 97 題已全部完成！你已清空整個題庫。'); return; }
+  currentQuestion=q;
+  document.getElementById('topicText').textContent = `${q.topic} ｜ 第 ${q.number} 題`;
+  document.getElementById('questionTitle').textContent = `請根據圖片選出正確答案`;
+  const grid=document.getElementById('imageGrid');
+  grid.innerHTML='';
+  q.images.forEach(src=>{
+    const img=document.createElement('img');
+    img.src=src;
+    img.loading='eager';
+    img.alt=`${q.topic} Q${q.number}`;
+    img.onclick=()=>window.open(src,'_blank');
+    grid.appendChild(img);
+  });
+  const fb=document.getElementById('feedback'); fb.className='feedback hidden'; fb.textContent='';
+  accepting=true;
+  startTimer(cfg.time);
+}
+function startTimer(sec){
+  clearInterval(timer);
+  timeLeft=sec;
+  renderTimer();
+  timer=setInterval(()=>{
+    timeLeft--;
+    renderTimer();
+    if(timeLeft<=0){
+      clearInterval(timer);
+      accepting=false;
+      handleResult(false, true);
+    }
+  },1000);
+}
+function renderTimer(){
+  const el=document.getElementById('timerText');
+  el.textContent=fmtTime(Math.max(0,timeLeft));
+  el.className='timer' + (timeLeft<=10?' danger':timeLeft<=20?' warn':'');
+}
+function submitAnswer(ans){
+  if(!accepting) return;
+  clearInterval(timer); accepting=false;
+  handleResult(ans===currentQuestion.answer, false, ans);
+}
+function handleResult(correct, timeout=false, ans=null){
+  totalAnswered++;
+  const fb=document.getElementById('feedback');
+  if(correct){
+    streak++; totalCorrect++;
+    fb.className='feedback ok';
+    fb.innerHTML = `✅ 正確！答案是 <strong>${currentQuestion.answer}</strong>。本層連勝：${streak}/${currentCfg().goal}`;
+  }else{
+    streak=0;
+    fb.className='feedback bad';
+    fb.innerHTML = timeout
+      ? `⏰ 時間到！正確答案是 <strong>${currentQuestion.answer}</strong>。本層連勝已重置。`
+      : `❌ 錯了，你選了 <strong>${ans}</strong>；正確答案是 <strong>${currentQuestion.answer}</strong>。本層連勝已重置。`;
+  }
+  fb.classList.remove('hidden');
+  updateStats();
+
+  setTimeout(()=>{
+    if(correct && streak>=currentCfg().goal){
+      if(currentLevel===LEVELS.length-1){
+        endGame(true, `你在第 5 層完成連續 ${currentCfg().goal} 題，成功爆機！總共答對 ${totalCorrect} / ${totalAnswered} 題。`);
+      }else{
+        currentLevel++; streak=0;
+        openModal(`升級成功！`, `你已晉級到第 ${currentCfg().level} 層。下一層目標：連續答對 ${currentCfg().goal} 題；每題限時 ${fmtTime(currentCfg().time)}。`, [
+          {label:'繼續挑戰', cls:'primary', action:'closeModal(); nextQuestion();'}
+        ]);
+      }
+    }else{
+      nextQuestion();
+    }
+  }, 1400);
+}
+function endGame(win, text){
+  clearInterval(timer); accepting=false;
+  openModal(win?'🎉 爆機成功！':'遊戲結束', text, [
+    {label:'重新開始', cls:'primary', action:'startGame()'},
+    {label:'返回首頁', cls:'secondary', action:'goHome()'}
+  ]);
+}
+function goHome(){
+  clearInterval(timer); closeModal();
+  document.getElementById('gameScreen').classList.add('hidden');
+  document.getElementById('startScreen').classList.remove('hidden');
+}
+function openModal(title, text, buttons){
+  document.getElementById('modalTitle').innerHTML=title;
+  document.getElementById('modalText').innerHTML=text;
+  const actions=document.getElementById('modalActions');
+  actions.innerHTML='';
+  buttons.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.className=b.cls; btn.textContent=b.label; btn.setAttribute('onclick', b.action);
+    actions.appendChild(btn);
+  });
+  document.getElementById('modal').classList.remove('hidden');
+}
+function closeModal(){ document.getElementById('modal').classList.add('hidden'); }
+</script>
+</body></html>
